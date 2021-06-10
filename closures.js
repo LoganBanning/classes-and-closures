@@ -23,13 +23,13 @@ function outer() {
 */
   
 // Code Here
-
+let inner = outer();
 
 
 //Once you do that, invoke inner.
 
 //Code Here
-
+inner();
 
 
 ////////// PROBLEM 2 //////////
@@ -52,6 +52,8 @@ function callFriend(name) {
 */
 
 //Code Here
+let callJake = callFriend('Jake');
+callJake('435-555-9248');
 
 
 
@@ -62,15 +64,21 @@ function callFriend(name) {
 */
 
 //Code Here
-
+function makeCounter(){
+  let counter = 0;
+  return function(){
+    counter += 1;
+    return counter;
+  }
+}
 
 
 //Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+  var count = makeCounter();
+  count(); // 1
+  count(); // 2
+  count(); // 3
+  count(); // 4
 
 
 
@@ -86,10 +94,18 @@ function callFriend(name) {
 */
 
 function counterFactory(value) {
-  // Code here.
+  function inc(){
+    value++;
+    return value;
+  }
+  function dec(){
+    value--;
+    return value;
+  }
 
   return {
-
+    inc,
+    dec,
   };
 }
 
@@ -113,9 +129,11 @@ function motivation( firstname, lastname ) {
   var welcomeText = "You're doing awesome, keep it up";
 
   // code message function here.
-
-  //Uncommment this to return the value of your message function
-  //return message;
+  return function(){
+    return `${welcomeText} ${firstname} ${lastname}.`
+    // Uncommment this to return the value of your message function
+  }
+  // return message;
 }
 
 var greeting = motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
@@ -133,19 +151,23 @@ var module = (function() {
   var person = {
     name: "phillip",
     age: 29,
-    location: "Utah"
+    location: "Utah",
   };
 
-  function privateMethod(){
+  var privateMethod = function(){
     return "Hi, I'm " + person.name + ", age " + person.age + " from " + person.location;
   }
 
   // Anything that is being returned is made public and can be invoked from
   // outside our lexical scope
   return {
-    // Code here.
+    publicMethod: function() {
+      return privateMethod();
+    }// Code here.
   };
 })();
+
+module().publicMethod();
 
 
 
@@ -162,7 +184,12 @@ function secretNumber() {
   var secret = 143;
 
   return {
-    // Code here
+    addToSecret: function(add){
+      return secret += add;
+    },
+    takeAwayFromSecret: function(remove){
+      return secret -= remove;
+    },
   };
 }
 
@@ -184,10 +211,11 @@ function secretNumber() {
   We'll need to use a closure to preserve a reference to i at the time of execution.
   
   Fix the code below to log the desired output.
+
 */
 
 function timeOutCounter() {
-  for (var i = 0; i <= 5; i++) {
+  for (let i = 0; i <= 5; i++) {
     setTimeout(function() {
       console.log(i);
     }, i * 1000);
